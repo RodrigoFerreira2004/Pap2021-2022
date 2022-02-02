@@ -7,25 +7,33 @@ public class scr : MonoBehaviour
 {
 
     
-    public Text p_s;
-    public Text CoinsA;
-    public Text PotatoA;
+    public Text p_s;//quatidade de batatas por segundo
+    public Text v_s;//quantidade de batatas que vende por segundo
+    public Text CoinsA;//quantidade de batatas moedas
+    public Text PotatoA;//quantidade de batatas armazendas
+//
+    public Button reb;
     public int potatos;
     
     public int coins;
     
     public bool reds;
-
+    public int RebirthCoin;
     public int multiplier;
     public int pc;
+    public float HowManyTime ;
+    public int HMR;
 
+    public float rebirthcost;
+    //public int 
     void Start()
     {
         multiplier=PlayerPrefs.GetInt("multiplier",1);//salva a variavel mulpilier
         potatos=PlayerPrefs.GetInt("potatos",0);//salva a variavel potatos
         coins=PlayerPrefs.GetInt("coins",0);//salva a variavel coins
         pc=PlayerPrefs.GetInt("pc",1);//salva a variavel pc
-        
+        RebirthCoin=PlayerPrefs.GetInt("RebirthCoin",0);
+        rebirthcost=1000000;
     }
 
     // Update is called once per frame
@@ -52,15 +60,28 @@ public class scr : MonoBehaviour
         PlayerPrefs.SetInt("coins",coins);
         PlayerPrefs.SetInt("pc",pc);
        }
-       if(potatos<=0){
-           StopCoroutine("ptoc");
-       }
-     }
+      }
+       
+    
 
     //Função para o jogador resetar o seu progresso
        public void reset  (){
-            PlayerPrefs.DeleteAll();
-            SceneManager.LoadScene("SampleScene");
+           if(coins>=rebirthcost){
+           // PlayerPrefs.DeleteAll();
+           // SceneManager.LoadScene("SampleScene");
+            HMR=HMR+1;
+            RebirthCoin+=1;
+            coins-=rebirthcost;
+            rebirthcost=rebirthcost*2;
+            PlayerPrefs.SetInt("HMR",HMR);
+            PlayerPrefs.SetFloat("rebirthcost",rebirthcost);
+            PlayerPrefs.DeleteKey(potatos);   
+            }
+            else
+            {
+            reb.interactable=false;
+            }
+
         }
 
     //quando clica na batata ganha 1 batata
@@ -87,5 +108,15 @@ public class scr : MonoBehaviour
         }
         }
     }
-}
+    public void rebirthshop(int rebi){
+            
+        if (rebi==1 && RebirthCoin>=3){
+            multiplier +=10;
+            RebirthCoin-=3;
 
+        }
+    }
+    public void hb(){
+        
+    }
+}
